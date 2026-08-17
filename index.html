@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gerenciamento de Eventos Acadêmicos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 { margin: 0; font-size: 2.2rem; }
+        .tab-buttons {
+            display: flex;
+            background: #ecf0f1;
+        }
+        .tab {
+            flex: 1;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .tab.active {
+            background: #3498db;
+            color: white;
+        }
+        .content {
+            padding: 30px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: 600;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+        input:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        #btn-salvar {
+            background: #3498db;
+            color: white;
+        }
+        #btn-salvar:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background: #3498db;
+            color: white;
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .btn-action {
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-edit { background: #f39c12; color: white; }
+        .btn-delete { background: #e74c3c; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Eventos Acadêmicos</h1>
+            <p>Gerencie eventos com facilidade</p>
+        </header>
+
+        <div class="tab-buttons">
+            <div class="tab active" onclick="trocarAba(0)"> Cadastrar Evento</div>
+            <div class="tab" onclick="trocarAba(1)">🔍 Consultar Eventos</div>
+        </div>
+
+        <!-- ABA 1: CADASTRO -->
+        <div id="aba-0" class="content">
+            <form id="form-eventos">
+                <div class="form-grid">
+                    <div>
+                        <label>Nome do Evento *</label>
+                        <input type="text" id="nome" required>
+                    </div>
+                    <div>
+                        <label>Descrição</label>
+                        <textarea id="descricao" rows="3"></textarea>
+                    </div>
+                    <div>
+                        <label>Data (ex: 15/08/2026)</label>
+                        <input type="text" id="data" required>
+                    </div>
+                    <div>
+                        <label>Horário</label>
+                        <input type="time" id="horario">
+                    </div>
+                    <div>
+                        <label>Local</label>
+                        <input type="text" id="local" required>
+                    </div>
+                    <div>
+                        <label>Responsável</label>
+                        <input type="text" id="responsavel">
+                    </div>
+                    <div>
+                        <label>Quantidade de Vagas</label>
+                        <input type="number" id="vagas" min="1">
+                    </div>
+                </div>
+                <button type="submit" id="btn-salvar"> Cadastrar Evento</button>
+            </form>
+        </div>
+
+        <!-- ABA 2: CONSULTA -->
+        <div id="aba-1" class="content" style="display:none;">
+            <input type="text" id="busca" placeholder=" Buscar evento por nome..." 
+                   onkeyup="filtrarTabela()" style="width:100%; padding:15px; margin-bottom:20px; font-size:16px; border:2px solid #3498db; border-radius:10px;">
+            
+            <table id="tabela-eventos">
+                <thead>
+                    <tr>
+                        <th>Nome do Evento</th>
+                        <th>Descrição</th>
+                        <th>Data</th>
+                        <th>Horário</th>
+                        <th>Local</th>
+                        <th>Responsável</th>
+                        <th>Vagas</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="modal-edit" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-top:0;">Editar Evento</h2>
+            <form id="form-edit">
+                <div class="form-grid">
+                    <div><label>Nome</label><input type="text" id="edit-nome" required></div>
+                    <div><label>Descrição</label><textarea id="edit-descricao" rows="3"></textarea></div>
+                    <div><label>Data</label><input type="text" id="edit-data" required></div>
+                    <div><label>Horário</label><input type="time" id="edit-horario"></div>
+                    <div><label>Local</label><input type="text" id="edit-local" required></div>
+                    <div><label>Responsável</label><input type="text" id="edit-responsavel"></div>
+                    <div><label>Vagas</label><input type="number" id="edit-vagas" min="1"></div>
+                </div>
+                <button type="submit" id="btn-editar"> Salvar Alterações</button>
+                <button type="button" onclick="fecharModal()" style="background:#95a5a5;color:white;margin-left:10px;">Cancelar</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
