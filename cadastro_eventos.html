@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagina_cadastro_eventos</title>
+</head>
+<body>
+
+    <h1>Login</h1>
+
+    <form>
+        <label>Usuário:</label>
+        <input type="text">
+
+        <br><br>
+
+        <label>Senha:</label>
+        <input type="password">
+
+        <br><br>
+
+        <select name="tipo de evento" id ="tipo-evento">
+            <option value="social">Social</option>
+            <option value="coorporativo">Coorporativo</option>
+            <option value="acadêmico">Acadêmico</option>
+            <option value="cultural">Cultural</option>
+            <option value="esportivo">Esportivo</option>
+        </select> 
+
+        <br><br>
+
+        <label>Descrição:</label>
+        <input type="text">
+
+        <br><br>
+
+        <label for="local-evento">Selecione o local do evento:</label>
+        <select name="local do evento" id="local-evento">
+            <option value="">-- Escolha um local --</option>
+            <option value="pelourinho">Pelourinho (Salvador)</option>
+            <option value="farol_da_barra">Farol da Barra (Salvador)</option>
+            <option value="porto_seguro">Porto Seguro</option>
+            <option value="itacare">Itacaré</option>
+            <option value="chapadadiamantina">Chapada Diamantina</option>
+            <option value="morro_de_sao_paulo">Morro de São Paulo</option>
+            <option value="praia_do_forte">Praia do Forte</option>
+            <option value="ilheus">Ilhéus</option>
+            <option value="trancoso">Trancoso</option>
+            <option value="bonfim">Igreja do Bonfim (Salvador)</option>
+        </select>
+
+        <br><br>
+
+        <label for="data-evento">Data do evento:</label>
+        <input type="date" name="data_do_evento" id="data-evento" required>
+
+        <br><br>
+
+        <button type="submit">Entrar</button>
+    </form>
+
+</body>
+</html>
