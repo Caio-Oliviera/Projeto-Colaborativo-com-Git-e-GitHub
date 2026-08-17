@@ -6,11 +6,9 @@ form.addEventListener('submit', (event) => {
     
     const list = []
 
-    forEach(input, (input, index) => {
-        const inp = input[index].value;
-        list.push(inp);
-    })
+    input.forEach((inp) => {
+        list.push(inp.value);
+    });
 
-    const result = { ...list };
-    return result;
-})
+    return list;
+});
