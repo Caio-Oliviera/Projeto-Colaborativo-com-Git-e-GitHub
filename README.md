@@ -29,6 +29,7 @@ O sistema permite o cadastro e a consulta de eventos acadêmicos, armazenando in
 
 - HTML
 - CSS
+- JavaScript
 - Git
 - GitHub
 - Visual Studio Code
